@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yuu先輩編集</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #0a0a0a;
+      text-align: center;
+      color: #fff;
+      overflow: hidden;
+      position: relative;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .profile-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .profile-pic {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #007bff;
+      box-shadow: 0 0 20px rgba(0, 123, 255, 0.8);
+      animation: fadeIn 2s ease-in-out;
+      z-index: 2;
+      position: relative;
+    }
+
+    /* Glow cincin energi */
+    .glow-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      border-top: 3px solid #00f7ff;
+      border-right: 3px solid #007bff;
+      animation: spin 3s linear infinite;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 20px rgba(0, 247, 255, 0.8), 0 0 40px rgba(0, 123, 255, 0.7);
+      z-index: 1;
+    }
+
+    @keyframes spin {
+      from {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+      to {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
+    h1 {
+      color: #007bff;
+      margin-bottom: 20px;
+      font-size: 36px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(0, 123, 255, 0.8), 0 0 20px rgba(0, 123, 255, 0.6);
+      animation: fadeIn 1.5s ease-in-out, pulseGlow 2s infinite;
+    }
+
+    .author, .x-dkva {
+      color: #007bff;
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 10px;
+      text-shadow: 0 0 10px rgba(0, 123, 255, 0.8), 0 0 20px rgba(0, 123, 255, 0.6);
+      animation: fadeIn 2s ease-in-out, pulseGlow 2.5s infinite;
+    }
+
+    @keyframes fadeIn {
+      0% {opacity: 0; transform: translateY(20px);}
+      100% {opacity: 1; transform: translateY(0);}
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% {
+        text-shadow: 0 0 10px rgba(0, 123, 255, 0.8), 0 0 20px rgba(0, 123, 255, 0.6);
+      }
+      50% {
+        text-shadow: 0 0 20px rgba(0, 123, 255, 1), 0 0 40px rgba(0, 123, 255, 0.9);
+      }
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      border: 2px solid #007bff;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: transparent;
+      color: #007bff;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
+      animation: fadeInButtons 3s ease-in-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 123, 255, 0.5), transparent);
+      animation: glowing 2s infinite;
+    }
+
+    @keyframes glowing {
+      0% {left: -100%;}
+      50% {left: 0%;}
+      100% {left: 100%;}
+    }
+
+    @keyframes fadeInButtons {
+      0% {opacity: 0; transform: translateY(20px);}
+      100% {opacity: 1; transform: translateY(0);}
+    }
+
+    button:hover {
+      background-color: #007bff;
+      color: #0a0a0a;
+      transform: scale(1.1);
+      box-shadow: 0 0 20px rgba(0, 123, 255, 1);
+    }
+
+    a { text-decoration: none; }
+
+    #quote {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #007bff;
+      text-shadow: 0 0 5px rgba(0, 123, 255, 0.7);
+    }
+
+    #message {
+      margin-top: 20px;
+      font-size: 36px;
+      font-weight: bold;
+      color: #007bff;
+      opacity: 0;
+      transform: scale(0);
+      transition: transform 0.5s ease, opacity 0.5s ease;
+      text-shadow: 0 0 10px rgba(0, 123, 255, 0.8);
+    }
+
+    #message.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+  </style>
+</head>
+<body>
+  <!-- Foto profil + cincin energi -->
+  <div class="profile-wrapper">
+    <div class="glow-ring"></div>
+    <img src="profil.jpg.jpeg" alt="Foto Profil" class="profile-pic">
+  </div>
+
+  <h1>YUDHA SENPAI EDITZ</h1>
+  <div class="author">BY: Yudha Febriyansah</div>
+  <div class="x-dkva">XI DKV A</div>
+
+  <button onclick="showQuote()">Kata Kata Hari Ini</button>
+  <a href="https://wa.me/6289512850395" target="_blank"><button>Hubungi Saya</button></a>
+  <a href="https://youtube.com/@yudhasenpaieditz?si=QwKAWKr6JtVGOqO-" target="_blank"><button>Channel YouTube Saya</button></a>
+  <button onclick="showMessage()">Cek Jodoh</button>
+
+  <div id="quote"></div>
+  <div id="message">GAY!</div>
+
+  <canvas id="matrix"></canvas>
+
+  <script>
+    function showQuote() {
+      const quotes = [
+        "Fisik bisa di ubah, Materi bisa dicari, tapi yang setia tidak bisa datang keduakali, menyala wih agus nih bos.",
+        "Setiap hari adalah peluang baru untuk belajar.",
+        "Jangan takut untuk mencoba hal baru.",
+        "Iman tanpa pertanyaan hanyalah warisan.",
+        "Tuhan ada pada Agama, Kebenaran ada pada Realitas, Kebahagian ada pada Cinta.",
+        "Bersyukur adalah kunci kebahagiaan.",
+        "Kegagalan adalah awal dari kesuksesan.",
+        "Hidup adalah perjalanan, nikmati setiap langkahnya.",
+        "Berani bermimpi, berani berusaha.",
+        "Waktu adalah aset yang paling berharga."
+      ];
+      document.getElementById('quote').textContent =
+        quotes[Math.floor(Math.random() * quotes.length)];
+    }
+
+    function showMessage() {
+      const message = document.getElementById('message');
+      message.classList.add('show');
+      setTimeout(() => {
+        message.classList.remove('show');
+      }, 5000);
+    }
+
+    // Matrix rain effect
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const letters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const fontSize = 16;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(1);
+
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#00ff00';
+      ctx.font = `${fontSize}px monospace`;
+
+      drops.forEach((y, i) => {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        const x = i * fontSize;
+        ctx.fillText(text, x, y * fontSize);
+
+        if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      });
+    }
+
+    function updateMatrix() {
+      draw();
+      requestAnimationFrame(updateMatrix);
+    }
+    updateMatrix();
+
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
